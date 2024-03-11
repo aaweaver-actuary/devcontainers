@@ -34,6 +34,17 @@ jobs:
     - name: Check out the repository
       uses: actions/checkout@v3
 
+    # Log the directory structure
+    - name: Log directory structure
+      run: |
+        ls -R
+
+    # Print the pwd with the checked-out code
+    - name: Print the pwd with the checked-out code
+      run: |
+        pwd
+        ls -R
+
     # Set up QEMU
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
