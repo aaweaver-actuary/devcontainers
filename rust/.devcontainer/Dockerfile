@@ -36,6 +36,10 @@ RUN touch /home/user/.profile \
 RUN curl https://sh.rustup.rs -sSf \
     | sh -s -- -y --default-toolchain $RUST_VERSION
 
+# Add the rustup and cargo binaries to the PATH
+ENV PATH=/usr/local/cargo/bin:$PATH
+ENV PATH=/usr/local/rustup:$PATH
+
 RUN rustup component add rust-src \
       clippy \
       rustfmt \
