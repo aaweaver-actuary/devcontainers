@@ -13,6 +13,7 @@ env:
   DOCKERFILE_FOLDER: ./rust/.devcontainer
   MAJOR_VERSION: 1
   MINOR_VERSION: {{ github.run_number }}
+  DSLIM_HTTP_PROBE: false
 
 jobs:
 
@@ -59,7 +60,8 @@ jobs:
     - name: Build full-sized images for all platforms
       uses: docker/build-push-action@v5
       with:
-        context: .
+        context: ${{ env.DOCKERFILE_FOLDER }}
+        file: ${{ env.DOCKERFILE_FOLDER }}/Dockerfile
         platforms: linux/amd64,linux/arm64
         push: false
         tags: ${{ env.TAG_STEM }}:${{ env.LATEST_TAG }}
@@ -67,12 +69,10 @@ jobs:
     # Slim the full-size image
     - name: Slim the full-size images for all platforms
       uses: kitabisa/docker-slim-action@v1
-        env:
-          DSLIM_HTTP_PROBE: false
-        with:
-          platforms: linux/amd64,linux/arm64
-          target: ${{ env.TAG_STEM }}:${{ env.LATEST_TAG }}
-          tag: "slim-${{ env.MAJOR_VERSION }}.${{ env.MINOR_VERSION }}"
+      with:
+        platforms: linux/amd64,linux/arm64
+        target: ${{ env.TAG_STEM }}:${{ env.LATEST_TAG }}
+        tag: "slim-${{ env.MAJOR_VERSION }}.${{ env.MINOR_VERSION }}"
 
     # Push only the slim image to Docker Hub
     - name: Push slim image to Docker Hub
