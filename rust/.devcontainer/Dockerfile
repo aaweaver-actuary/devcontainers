@@ -21,22 +21,22 @@ RUN apk update && apk add --no-cache \
     bash \
     git \
     libffi-dev \
-    openssl-dev \
-\
-    && mkdir -p /usr/local/rustup \
+    openssl-dev
+
+RUN mkdir -p /usr/local/rustup \
       /usr/local/cargo \
       /usr/local/cargo/bin \
-      /home/user \
-\
-    && touch /home/user/.profile \
+      /home/user
+
+RUN touch /home/user/.profile \
       /home/user/.bashrc \
       /home/user/.bash_profile \
-      /home/user/.hushlogin \
-\
-    && curl https://sh.rustup.rs -sSf \
-    | sh -s -- -y --default-toolchain $RUST_VERSION \
-\
-    && rustup component add rust-src \
+      /home/user/.hushlogin
+
+RUN curl https://sh.rustup.rs -sSf \
+    | sh -s -- -y --default-toolchain $RUST_VERSION
+
+RUN rustup component add rust-src \
       clippy \
       rustfmt \
       rust-analyzer \
