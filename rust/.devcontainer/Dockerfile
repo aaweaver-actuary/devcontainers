@@ -1,20 +1,30 @@
 FROM alpine:3.19
 
-ENV RUSTUP_HOME=/usr/local/rustup \
-    CARGO_HOME=/usr/local/cargo \
+LABEL maintainer="Andy Weaver <andrewayersweaver@gmail.com>"
+
+# Set the default environment variables
+ENV DOTFILES_REPO=aaweaver-actuary/dotfiles \
     NODE_TLS_REJECT_UNAUTHORIZED=0 \
+    USER=user
+
+# Set the language-specific environment variables
+ENV LANG=rust \
+    RUSTUP_HOME=/usr/local/rustup \
+    CARGO_HOME=/usr/local/cargo \
     RUST_BACKTRACE=1 \
     RUST_LOG=info \
-    USER=user \
-    RUST_VERSION=1.76.0 \ 
-    DOTFILES_REPO=aaweaver-actuary/dotfiles
+    RUST_VERSION=1.76.0
 
-RUN mkdir -p /home/test
-COPY ./.test /home/test
+# Language-specific folders
+RUN mkdir -p /usr/local/rustup \
+      /usr/local/cargo \
+      /usr/local/cargo/bin \
+      /home/user
 
+# Set the current directory to a staging directory
 WORKDIR /usr/staging
 
-# Install updates
+# Install updates & dev dependencies
 RUN apk update && apk add --no-cache \
     build-base \
     curl \
@@ -23,16 +33,7 @@ RUN apk update && apk add --no-cache \
     libffi-dev \
     openssl-dev
 
-RUN mkdir -p /usr/local/rustup \
-      /usr/local/cargo \
-      /usr/local/cargo/bin \
-      /home/user
-
-RUN touch /home/user/.profile \
-      /home/user/.bashrc \
-      /home/user/.bash_profile \
-      /home/user/.hushlogin
-
+# Download and install rust
 RUN curl https://sh.rustup.rs -sSf \
     | sh -s -- -y --default-toolchain $RUST_VERSION
 
@@ -40,6 +41,8 @@ RUN curl https://sh.rustup.rs -sSf \
 ENV PATH=/usr/local/cargo/bin:$PATH
 ENV PATH=/usr/local/rustup:$PATH
 
+# Install the rust components (some of these will already be installed,
+# but it doesn't harm anything to re-list them)
 RUN rustup component add rust-src \
       clippy \
       rustfmt \
@@ -51,14 +54,7 @@ RUN rustup component add rust-src \
       rust-std \
       rustc
 
-# Add Andy's dotfiles
-RUN git clone https://github.com/aaweaver-actuary/dotfiles.git \
-    && mv ./dotfiles/.bashrc $HOME/.bashrc \ 
-    && mv ./dotfiles/.profile $HOME/.profile \ 
-    && mv ./dotfiles/.hushlogin $HOME/.hushlogin \
-    && mv ./dotfiles/.prettierrc $HOME/.prettierrc
-
-# Link to the dotfiles and binaries
+# Link to the various rust binaries
 RUN ln -s /usr/local/cargo/bin/rustc /bin/rustc \
     && ln -s /usr/local/cargo/bin/cargo /bin/cargo \
     && ln -s /usr/local/cargo/bin/rustup /bin/rustup \
@@ -69,6 +65,22 @@ RUN ln -s /usr/local/cargo/bin/rustc /bin/rustc \
     && ln -s /usr/local/cargo/bin/cargo-clippy /bin/cargo-clippy \
     && ln -s /usr/local/cargo/bin/cargo-fmt /bin/cargo-fmt \
     && ln -s /usr/local/cargo/bin/cargo-miri /bin/cargo-miri 
+
+# Add Andy's dotfiles
+RUN git clone https://github.com/aaweaver-actuary/dotfiles.git \
+    && mv ./dotfiles/.bashrc $HOME/.bashrc \ 
+    && mv ./dotfiles/.profile $HOME/.profile \ 
+    && mv ./dotfiles/.hushlogin $HOME/.hushlogin \
+    && mv ./dotfiles/.prettierrc $HOME/.prettierrc \
+    && mv ./dotfiles/.gitconfig $HOME/.gitconfig \
+    && mv ./dotfiles/.gitignore_global $HOME/.gitignore_global \
+    && rm -rf ./dotfiles
+
+# Add env test from this repo
+RUN git clone https://github.com/aaweaver-actuary/devcontainers.git \
+    && mv ./devcontainers/rust/.test $HOME/.test \
+    && mv ./devcontainers/rust/Makefile $HOME/Makefile \
+    && rm -rf ./devcontainers
 
 # Remove build dependencies and clean up 
 RUN apk del curl \
@@ -98,9 +110,6 @@ SHELL ["/bin/bash", "-c"]
 
 # Set the default working directory
 WORKDIR $HOME
-
-# Copy over the env test folder
-RUN mv /home/test/Makefile ./Makefile
 
 # Set the default user 
 USER user
