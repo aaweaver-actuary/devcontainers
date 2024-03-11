@@ -10,7 +10,7 @@ ENV RUSTUP_HOME=/usr/local/rustup \
     DOTFILES_REPO=aaweaver-actuary/dotfiles
 
 RUN mkdir -p /home/test
-COPY ./rust/.devcontainer/.test /home/test
+COPY ./.test /home/test
 
 WORKDIR /usr/staging
 
