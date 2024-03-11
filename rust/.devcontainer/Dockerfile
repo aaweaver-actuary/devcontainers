@@ -78,10 +78,10 @@ RUN git clone https://github.com/aaweaver-actuary/dotfiles.git \
 
 # Add env test from this repo
 RUN git clone https://github.com/aaweaver-actuary/devcontainers.git \
-    && ls ./ -lahR \
     && cd ./devcontainers/${LANG}/.devcontainer \
+    && ls ./ -lahR \
     && mv ./.test $HOME/.test \
-    && mv ./Makefile $HOME/Makefile \
+    && mv $HOME/.test/Makefile $HOME/Makefile \
     && cd ../../../ \
     && rm -rf ./devcontainers
 
