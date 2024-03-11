@@ -77,4 +77,4 @@ jobs:
     # Push only the slim image to Docker Hub
     - name: Push slim image to Docker Hub
       run: |
-      docker image push ${{ env.TAG_STEM }}:slim-${{ env.MAJOR_VERSION }}.${{ env.MINOR_VERSION }}
+        docker image push ${{ env.TAG_STEM }}:slim-${{ env.MAJOR_VERSION }}.${{ env.MINOR_VERSION }}
