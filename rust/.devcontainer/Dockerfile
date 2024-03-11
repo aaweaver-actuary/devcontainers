@@ -79,10 +79,10 @@ RUN git clone https://github.com/aaweaver-actuary/dotfiles.git \
 # Add env test from this repo
 RUN git clone https://github.com/aaweaver-actuary/devcontainers.git \
     && ls ./ -lahR \
-    && cd ./devcontainers/rust \
+    && cd ./devcontainers/${LANG}/.devcontainer \
     && mv ./.test $HOME/.test \
     && mv ./Makefile $HOME/Makefile \
-    && cd ../../ \
+    && cd ../../../ \
     && rm -rf ./devcontainers
 
 # Remove build dependencies and clean up 
