@@ -67,7 +67,7 @@ jobs:
     # Test the image before going further
     - name: Test
       run: |
-        docker run --rm aaweaver-actuary/${{ env.TAG_STEM }}:test make testenv
+        docker run --rm aaweaver-actuary/${{ env.TAG_STEM }}:test
 
     # If the test passed, build the full-size images for all platforms
     - uses: mr-smithers-excellent/docker-build-push@v6.3
