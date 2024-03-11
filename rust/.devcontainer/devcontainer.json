@@ -1,0 +1,25 @@
+{
+  "name": "Rust Dev Container",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "swellaby.rust-pack",
+        "dustypomerleau.rust-syntax",
+        "esbenp.prettier-vscode",
+        "vscode-icons-team.vscode-icons",
+        "usernamehw.errorlens"
+      ]
+    },
+    "settings": {
+      "terminal.integrated.shell.linux": "/bin/bash",
+      "workbench.panel.defaultLocation": "bottom",
+      "workbench.colorTheme": "GitHub Dark High Contrast"
+    }
+  }
+}

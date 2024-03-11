@@ -1,0 +1,26 @@
+name: Build and slim rust-dev container
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build ./rust/.devcontainer --file Dockerfile --tag rust-dev:$(date +%s)
+
+    - uses: kitabisa/docker-slim-action@0c1be445bffc5eafacb546d9b64bd3fe4de31312
+    - name: Minify the image
+      with:
+        # Target container image (name or ID)
+        target: rust-dev
+        # Specify a tag for slimmed target container image
+        tag: slim

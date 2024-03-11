@@ -3,15 +3,16 @@ FROM alpine:3.19
 ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
     PATH=/usr/local/cargo/bin:$PATH \
-    RUST_VERSION=1.76.0 \
-    HOME=/home/user \
     NODE_TLS_REJECT_UNAUTHORIZED=0 \
     RUST_BACKTRACE=1 \
     RUST_LOG=info \
-    USER=user
+    USER=user \
+    RUST_VERSION=1.76.0 \ 
+    DOTFILES_REPO=aaweaver-actuary/dotfiles
 
 WORKDIR /usr/staging
 
+# Install updates
 RUN apk update && apk add --no-cache \
     build-base \
     curl \
@@ -42,9 +43,29 @@ RUN apk update && apk add --no-cache \
       rls \
       rust-docs \
       rust-std \
-      rustc \
-\
-    && apk del curl \
+      rustc
+
+# Add Andy's dotfiles
+RUN git clone https://github.com/aaweaver-actuary/dotfiles.git \
+    && mv ./dotfiles/.bashrc $HOME/.bashrc \ 
+    && mv ./dotfiles/.profile $HOME/.profile \ 
+    && mv ./dotfiles/.hushlogin $HOME/.hushlogin \
+    && mv ./dotfiles/.prettierrc $HOME/.prettierrc
+
+# Link to the dotfiles and binaries
+RUN ln -s /usr/local/cargo/bin/rustc /bin/rustc \
+    && ln -s /usr/local/cargo/bin/cargo /bin/cargo \
+    && ln -s /usr/local/cargo/bin/rustup /bin/rustup \
+    && ln -s /usr/local/cargo/bin/rustdoc /bin/rustdoc \
+    && ln -s /usr/local/cargo/bin/rustfmt /bin/rustfmt \
+    && ln -s /usr/local/cargo/bin/rust-analyzer /bin/rust-analyzer \
+    && ln -s /usr/local/cargo/bin/rls /bin/rls \
+    && ln -s /usr/local/cargo/bin/cargo-clippy /bin/cargo-clippy \
+    && ln -s /usr/local/cargo/bin/cargo-fmt /bin/cargo-fmt \
+    && ln -s /usr/local/cargo/bin/cargo-miri /bin/cargo-miri 
+
+# Remove build dependencies and clean up 
+RUN apk del curl \
     && rm -rf /var/cache/apk/* \
     && rm -rf /usr/staging
 
@@ -74,5 +95,10 @@ USER user
 
 # Set the default working directory
 WORKDIR $HOME
+
+# Copy over the env test folder
+COPY .test .test
+COPY Makefile Makefile
+
 
 CMD ["/bin/bash"]
