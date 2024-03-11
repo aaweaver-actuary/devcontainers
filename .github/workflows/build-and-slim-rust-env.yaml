@@ -6,6 +6,14 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  TAG_STEM: rust-dev
+  TEST_TAG: test
+  LATEST_TAG: latest
+  DOCKERFILE_FOLDER: ./rust/.devcontainer
+  MAJOR_VERSION: 1
+  MINOR_VERSION: {{ github.run_number }}
+
 jobs:
 
   build:
@@ -13,14 +21,60 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build ./rust/.devcontainer --file Dockerfile --tag rust-dev:$(date +%s)
+    # Check out the repository
+    - name: Check out the repository
+      uses: actions/checkout@v3
 
-    - uses: kitabisa/docker-slim-action@0c1be445bffc5eafacb546d9b64bd3fe4de31312
-    - name: Minify the image
+    # Set up QEMU
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v3
+
+    # Set up Docker Buildx
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    # Login to Docker Hub
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
       with:
-        # Target container image (name or ID)
-        target: rust-dev
-        # Specify a tag for slimmed target container image
-        tag: slim
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+    # Build test image
+    - name: Build and export to Docker
+      uses: docker/build-push-action@v5
+      with:
+        context: ${{ env.DOCKERFILE_FOLDER }}
+        file: ${{ env.DOCKERFILE_FOLDER }}/Dockerfile
+        load: true
+        push: false
+        tags: ${{ env.TAG_STEM }}:${{ env.TEST_TAG }}
+
+    # Test the image before going further
+    - name: Test
+      run: |
+        docker run --rm ${{ env.TAG_STEM }}:${{ env.TEST_TAG }}
+
+    # If the test passed, build the full-size images for all platforms
+    - name: Build full-sized images for all platforms
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        platforms: linux/amd64,linux/arm64
+        push: false
+        tags: ${{ env.TAG_STEM }}:${{ env.LATEST_TAG }}
+
+    # Slim the full-size image
+    - name: Slim the full-size images for all platforms
+      uses: kitabisa/docker-slim-action@v1
+        env:
+          DSLIM_HTTP_PROBE: false
+        with:
+          platforms: linux/amd64,linux/arm64
+          target: ${{ env.TAG_STEM }}:${{ env.LATEST_TAG }}
+          tag: "slim-${{ env.MAJOR_VERSION }}.${{ env.MINOR_VERSION }}"
+
+    # Push only the slim image to Docker Hub
+    - name: Push slim image to Docker Hub
+      run: |
+      docker image push ${{ env.TAG_STEM }}:slim-${{ env.MAJOR_VERSION }}.${{ env.MINOR_VERSION }}
