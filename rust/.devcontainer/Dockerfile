@@ -90,15 +90,14 @@ EXPOSE 2222
 # Set the default shell
 SHELL ["/bin/bash", "-c"]
 
-# Set the default user 
-USER user
-
 # Set the default working directory
 WORKDIR $HOME
 
 # Copy over the env test folder
-COPY .test .test
-COPY Makefile Makefile
+COPY ./rust/.devcontainer/.test .envtest
+RUN mv ./.envtest/Makefile ./Makefile
 
+# Set the default user 
+USER user
 
 CMD ["/bin/bash"]
