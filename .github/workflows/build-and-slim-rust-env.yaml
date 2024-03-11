@@ -13,7 +13,7 @@ env:
   DOCKERFILE_FOLDER: ./rust/.devcontainer
   MAJOR_VERSION: 1
   DSLIM_HTTP_PROBE: false
-  DOCKERHUB_REPO: ${{ secrets.DOCKERHUB_USERNAME }}/devcontainers
+  DOCKERHUB_REPO: aaweaver9/devcontainers
 
 jobs:
 
