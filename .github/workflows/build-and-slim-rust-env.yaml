@@ -56,7 +56,7 @@ jobs:
 
     # Build test image
     - name: Build and export to Docker
-      uses: docker/build-push-action@v5
+      uses: docker/build-push-action@v6
       with:
         context: ${{ env.DOCKERFILE_FOLDER }}
         file: ${{ env.DOCKERFILE_FOLDER }}/Dockerfile
@@ -73,19 +73,25 @@ jobs:
     - name: Build full-sized images for all platforms
       uses: docker/build-push-action@v5
       with:
-        context: ${{ env.DOCKERFILE_FOLDER }}
-        file: ${{ env.DOCKERFILE_FOLDER }}/Dockerfile
-        push: false
-        tags: ${{ env.DOCKERHUB_REPO }}:${{ env.TAG_STEM }}-${{ env.LATEST_TAG }}
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+        registry: docker.io
+        dockerfile: ${{ env.DOCKERFILE_FOLDER }}/Dockerfile
+        tags: "${{ env.TAG_STEM }}-${{ env.LATEST_TAG }}","${{ env.TAG_STEM }}-{{env.MAJOR_VERSION }}.{{ github.run_number }}"
 
     # Slim the full-size image
     - name: Slim the full-size images for all platforms
       uses: kitabisa/docker-slim-action@v1
       with:
-        target: ${{ env.DOCKERHUB_REPO }}:${{ env.TAG_STEM }}-${{ env.LATEST_TAG }}
-        tag: ${{ env.DOCKERHUB_REPO }}:${{ env.TAG_STEM }}-${{ env.LATEST_TAG }}-slim-{{env.MAJOR_VERSION }}.{{ github.run_number }}"
+        target: "${{ env.DOCKERHUB_REPO }}:${{ env.TAG_STEM }}-${{ env.LATEST_TAG }}"
+        tag: "slim"
+
+    # Dump the report
+    - run: echo "${REPORT}"
+      env:
+        REPORT: ${{ steps.slim.outputs.report }}
 
     # Push only the slim image to Docker Hub
     - name: Push slim image to Docker Hub
       run: |
-        docker image push ${{ env.DOCKERHUB_REPO }}:${{ env.TAG_STEM }}-${{ env.LATEST_TAG }}-slim-{{env.MAJOR_VERSION }}.{{ github.run_number }}"
+        docker image push 
