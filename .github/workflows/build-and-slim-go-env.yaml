@@ -1,0 +1,44 @@
+# # this action will build and slim the go development environment
+# # and push it to docker hub
+# name: Build and slim go env
+# env: 
+#   GO_VERSION: 1.22
+#   SLIM_VERSION: 1.40.11
+#   DOCKERFILE_PATH: ./golang/Dockerfile
+  
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v2
+
+#       - name: Set up Go ${{ env.GO_VERSION }}
+#         uses: actions/setup-go@v2
+#         with:
+#           go-version: ${{ env.GO_VERSION }}
+
+#       - name: Build and push to Docker Hub
+#         uses: docker/build-push-action@v2
+#         with:
+#           context: .
+#           file: ${{ env.DOCKERFILE_PATH }}
+#           push: true
+#           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/go-env:latest
+#           build-args: |
+#             GO_VERSION=${{ env.GO_VERSION}}
+#             SLIM_VERSION=${{ env.SLIM_VERSION}}
+#             SLIM_REPOSITORY=ghcr.io
+#             SLIM_USERNAME=slim
+#             SLIM_PASSWORD=${{ secrets.GITHUB_TOKEN }}
+#             SLIM_REGISTRY=docker.io
+#             SLIM_IMAGE=go-env
+#             SLIM_TAG=latest
+#             SLIM_USERNAME=${{ secrets.DOCKER_HUB_USERNAME }}
+#             SLIM_PASSWORD=${{ secrets.DOCKER_HUB_TOKEN }}
