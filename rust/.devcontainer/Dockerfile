@@ -2,13 +2,15 @@ FROM alpine:3.19
 
 ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
-    PATH=/usr/local/cargo/bin:$PATH \
     NODE_TLS_REJECT_UNAUTHORIZED=0 \
     RUST_BACKTRACE=1 \
     RUST_LOG=info \
     USER=user \
     RUST_VERSION=1.76.0 \ 
     DOTFILES_REPO=aaweaver-actuary/dotfiles
+
+RUN mkdir -p /home/test
+COPY ./rust/.devcontainer/.test /home/test
 
 WORKDIR /usr/staging
 
@@ -94,8 +96,7 @@ SHELL ["/bin/bash", "-c"]
 WORKDIR $HOME
 
 # Copy over the env test folder
-COPY ./rust/.devcontainer/.test .envtest
-RUN mv ./.envtest/Makefile ./Makefile
+RUN mv /home/test/Makefile ./Makefile
 
 # Set the default user 
 USER user
