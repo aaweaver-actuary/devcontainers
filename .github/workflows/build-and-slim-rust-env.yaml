@@ -70,20 +70,20 @@ jobs:
         docker run --rm ${{ env.DOCKERHUB_REPO }}:${{ env.TAG_STEM }}-${{ env.TEST_TAG }}
 
     # If the test passed, build the full-size images for all platforms
-    - name: Build full-sized images for all platforms
-      uses: docker/build-push-action@v5
+    - uses: docker/build-push-action@v6
+      name: Build full-sized images for all platforms
       with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
+        image: aaweaver-actuary/${{ env.TAG_STEM }}
         registry: docker.io
         dockerfile: ${{ env.DOCKERFILE_FOLDER }}/Dockerfile
-        tags: "${{ env.TAG_STEM }}-${{ env.LATEST_TAG }}","${{ env.TAG_STEM }}-{{env.MAJOR_VERSION }}.{{ github.run_number }}"
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     # Slim the full-size image
     - name: Slim the full-size images for all platforms
       uses: kitabisa/docker-slim-action@v1
       with:
-        target: "${{ env.DOCKERHUB_REPO }}:${{ env.TAG_STEM }}-${{ env.LATEST_TAG }}"
+        target: aaweaver-actuary/${{ env.TAG_STEM }}
         tag: "slim"
 
     # Dump the report
@@ -94,4 +94,4 @@ jobs:
     # Push only the slim image to Docker Hub
     - name: Push slim image to Docker Hub
       run: |
-        docker image push 
+        docker image push aaweaver-actuary/${{ env.TAG_STEM }} --all-tags
