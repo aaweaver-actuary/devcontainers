@@ -58,7 +58,7 @@ jobs:
     - name: Build and export to Docker
       uses: mr-smithers-excellent/docker-build-push@v6.3
       with:
-        image: aaweaver-actuary/${{ env.TAG_STEM }}
+        image: aaweaver9/${{ env.TAG_STEM }}
         registry: docker.io
         dockerfile: ${{ env.DOCKERFILE_FOLDER }}/Dockerfile
         pushImage: false
@@ -67,13 +67,13 @@ jobs:
     # Test the image before going further
     - name: Test
       run: |
-        docker run --rm aaweaver-actuary/${{ env.TAG_STEM }}:test
+        docker run --rm aaweaver9/${{ env.TAG_STEM }}:test
 
     # If the test passed, build the full-size images for all platforms
     - uses: mr-smithers-excellent/docker-build-push@v6.3
       name: Build full-sized images
       with:
-        image: aaweaver-actuary/${{ env.TAG_STEM }}
+        image: aaweaver9/${{ env.TAG_STEM }}
         registry: docker.io
         dockerfile: ${{ env.DOCKERFILE_FOLDER }}/Dockerfile
         username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -83,7 +83,7 @@ jobs:
     - name: Slim the full-size images
       uses: kitabisa/docker-slim-action@v1
       with:
-        target: aaweaver-actuary/${{ env.TAG_STEM }}
+        target: aaweaver9/${{ env.TAG_STEM }}
         tag: "slim"
 
     # Dump the report
@@ -94,4 +94,4 @@ jobs:
     # Push only the slim image to Docker Hub
     - name: Push slim and full-size images to Docker Hub
       run: |
-        docker image push aaweaver-actuary/${{ env.TAG_STEM }} --all-tags
+        docker image push aaweaver9/${{ env.TAG_STEM }} --all-tags
