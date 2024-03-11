@@ -56,18 +56,18 @@ jobs:
 
     # Build test image
     - name: Build and export to Docker
-      uses: docker/build-push-action@v6
+      uses: mr-smithers-excellent/docker-build-push@v6.3
       with:
-        context: ${{ env.DOCKERFILE_FOLDER }}
-        file: ${{ env.DOCKERFILE_FOLDER }}/Dockerfile
-        load: true
-        push: false
-        tags: ${{ env.DOCKERHUB_REPO }}:${{ env.TAG_STEM }}-${{ env.TEST_TAG }}
+        image: aaweaver-actuary/${{ env.TAG_STEM }}
+        registry: docker.io
+        dockerfile: ${{ env.DOCKERFILE_FOLDER }}/Dockerfile
+        pushImage: false
+        tags: test
 
     # Test the image before going further
     - name: Test
       run: |
-        docker run --rm ${{ env.DOCKERHUB_REPO }}:${{ env.TAG_STEM }}-${{ env.TEST_TAG }}
+        docker run --rm aaweaver-actuary/${{ env.TAG_STEM }}:test make testenv
 
     # If the test passed, build the full-size images for all platforms
     - uses: mr-smithers-excellent/docker-build-push@v6.3
