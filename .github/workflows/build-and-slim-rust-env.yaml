@@ -27,9 +27,6 @@ jobs:
 
   build:
     needs: login
-    strategy:
-      matrix:
-        target: [linux/amd64, linux/arm64]
     runs-on: ubuntu-latest
 
     steps:
@@ -78,7 +75,6 @@ jobs:
       with:
         context: ${{ env.DOCKERFILE_FOLDER }}
         file: ${{ env.DOCKERFILE_FOLDER }}/Dockerfile
-        target: ${{ matrix.target }}
         push: false
         tags: ${{ env.TAG_STEM }}:${{ env.LATEST_TAG }}
 
@@ -86,11 +82,10 @@ jobs:
     - name: Slim the full-size images for all platforms
       uses: kitabisa/docker-slim-action@v1
       with:
-        platforms: ${{ matrix.target }}
         target: ${{ env.TAG_STEM }}:${{ env.LATEST_TAG }}
-        tag: "slim-${{ env.MAJOR_VERSION }}.{{ github.run_number }}_[${{ matrix.target }}]"
+        tag: "slim-${{ env.MAJOR_VERSION }}.{{ github.run_number }}"
 
     # Push only the slim image to Docker Hub
     - name: Push slim image to Docker Hub
       run: |
-        docker image push ${{ env.TAG_STEM }}:slim-${{ env.MAJOR_VERSION }}.{{ github.run_number }}_[${{ matrix.target }}]
+        docker image push ${{ env.TAG_STEM }}:slim-${{ env.MAJOR_VERSION }}.{{ github.run_number }}
