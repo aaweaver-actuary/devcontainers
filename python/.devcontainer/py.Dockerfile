@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/python:dev-3.11 as base
+FROM mcr.microsoft.com/devcontainers/base:bookworm as base
 
 ARG python_version=3.11.8
 
