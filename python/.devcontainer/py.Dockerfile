@@ -27,7 +27,7 @@ RUN if getent group $USER_GID ; then echo "Group $USER_GID already exists"; else
     && chmod -R 777 /app
 
 # Copy over the Makefile
-COPY ./Makefile /app/Makefile
+COPY python/.devcontainer/Makefile /app/Makefile
 
 # Switch to the user's home directory
 WORKDIR $HOME
@@ -43,6 +43,7 @@ RUN apt-get update \
         libreadline-dev \
         libsqlite3-dev \
         curl \
+    make \
         bash \
         git \
         libncursesw5-dev \
