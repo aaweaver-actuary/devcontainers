@@ -13,6 +13,7 @@ env:
   DOCKERFILE_FOLDER: ./rust/.devcontainer
   MAJOR_VERSION: 1
   DSLIM_HTTP_PROBE: false
+  DOCKERHUB_REPO_OWNER: aaweaver9
   DOCKERHUB_REPO: aaweaver9/devcontainers
 
 jobs:
@@ -58,7 +59,7 @@ jobs:
     - name: Build and export to Docker
       uses: mr-smithers-excellent/docker-build-push@v6.3
       with:
-        image: aaweaver9/${{ env.TAG_STEM }}
+        image: ${{ env.DOCKERHUB_REPO_OWNER }}/${{ env.TAG_STEM }}
         registry: docker.io
         dockerfile: ${{ env.DOCKERFILE_FOLDER }}/Dockerfile
         pushImage: false
@@ -67,31 +68,37 @@ jobs:
     # Test the image before going further
     - name: Test
       run: |
-        docker run --rm aaweaver9/${{ env.TAG_STEM }}:test
+        docker run --rm ${{ env.DOCKERHUB_REPO_OWNER }}/${{ env.TAG_STEM }}:test
 
     # If the test passed, build the full-size images for all platforms
     - uses: mr-smithers-excellent/docker-build-push@v6.3
       name: Build full-sized images
       with:
-        image: aaweaver9/${{ env.TAG_STEM }}
+        image: ${{ env.DOCKERHUB_REPO_OWNER }}/${{ env.TAG_STEM }}
         registry: docker.io
         dockerfile: ${{ env.DOCKERFILE_FOLDER }}/Dockerfile
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
+        tags: ${{ env.LATEST_TAG }}, v${{ env.MAJOR_VERSION }}.${{ github.run_number }}
 
     # Slim the full-size image
     - name: Slim the full-size images
       uses: kitabisa/docker-slim-action@v1
       with:
-        target: aaweaver9/${{ env.TAG_STEM }}
+        target: ${{ env.DOCKERHUB_REPO_OWNER }}/${{ env.TAG_STEM }}
         tag: "slim"
 
-    # Dump the report
-    - run: echo "${REPORT}"
-      env:
-        REPORT: ${{ steps.slim.outputs.report }}
+    # Delete the test image
+    - name: Delete the test image
+      run: |
+        docker image rm ${{ env.DOCKERHUB_REPO_OWNER }}/${{ env.TAG_STEM }}:${{ env.TEST_TAG }}
+
+    # List the images
+    - name: List the images
+      run: |
+        docker image ls
 
     # Push only the slim image to Docker Hub
     - name: Push slim and full-size images to Docker Hub
       run: |
-        docker image push aaweaver9/${{ env.TAG_STEM }} --all-tags
+        docker image push ${{ env.DOCKERHUB_REPO_OWNER }}/${{ env.TAG_STEM }} --all-tags
