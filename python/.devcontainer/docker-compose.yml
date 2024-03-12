@@ -1,0 +1,10 @@
+version: '3'
+services:
+  py:
+    build:
+      context: .
+      dockerfile: py.Dockerfile
+    volumes:
+      - ..:/app
+    working_dir: /app
+    command: "tail -f /dev/null"
