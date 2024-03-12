@@ -1,0 +1,10 @@
+version: '3'
+services:
+  development:
+    build:
+      context: .
+      dockerfile: rust.Dockerfile
+    volumes:
+      - ..:/app
+    working_dir: /app
+    command: "tail -f /dev/null"

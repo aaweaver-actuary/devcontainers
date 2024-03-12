@@ -1,9 +1,9 @@
 {
-  "name": "Rust Dev Container",
-  "build": {
-    "dockerfile": "Dockerfile",
-    "context": ".."
-  },
+  "name": "Rust",
+  "privileged": true,
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "development",
+  "workspaceFolder": "/app",
   "customizations": {
     "vscode": {
       "extensions": [

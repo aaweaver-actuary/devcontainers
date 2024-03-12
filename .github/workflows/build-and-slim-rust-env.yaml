@@ -47,10 +47,6 @@ jobs:
         pwd
         ls -R
 
-    # # Set up QEMU
-    # - name: Set up QEMU
-    #   uses: docker/setup-qemu-action@v3
-
     # Set up Docker Buildx
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
@@ -61,7 +57,7 @@ jobs:
       with:
         image: ${{ env.DOCKERHUB_REPO_OWNER }}/${{ env.TAG_STEM }}
         registry: docker.io
-        dockerfile: ${{ env.DOCKERFILE_FOLDER }}/Dockerfile
+        dockerfile: ${{ env.DOCKERFILE_FOLDER }}/${{ env.TAG_STEM }}.Dockerfile
         pushImage: false
         tags: test
 
@@ -76,7 +72,7 @@ jobs:
       with:
         image: ${{ env.DOCKERHUB_REPO_OWNER }}/${{ env.TAG_STEM }}
         registry: docker.io
-        dockerfile: ${{ env.DOCKERFILE_FOLDER }}/Dockerfile
+        dockerfile: ${{ env.DOCKERFILE_FOLDER }}/${{ env.TAG_STEM }}.Dockerfile
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
         tags: ${{ env.LATEST_TAG }}, v${{ env.MAJOR_VERSION }}.${{ github.run_number }}
