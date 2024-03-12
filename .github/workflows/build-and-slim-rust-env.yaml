@@ -1,4 +1,4 @@
-name: Build and slim rust-dev container
+name: rust devcontainer
 
 on:
   push:
