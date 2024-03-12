@@ -64,7 +64,7 @@ jobs:
     # Test the image before going further
     - name: Test
       run: |
-        docker run --rm ${{ env.DOCKERHUB_REPO_OWNER }}/${{ env.TAG_STEM }}:test
+        docker exec -it ${{ env.DOCKERHUB_REPO_OWNER }}/${{ env.TAG_STEM }}:test ls
 
     # If the test passed, build the full-size images for all platforms
     - uses: mr-smithers-excellent/docker-build-push@v6.3
