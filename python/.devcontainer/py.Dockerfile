@@ -61,10 +61,10 @@ RUN apt-get update \
     && mv ./dotfiles/.bashrc /home/user/.bashrc \ 
     && mv ./dotfiles/.profile /home/user/.profile \ 
     && mv ./dotfiles/.hushlogin /home/user/.hushlogin \
-    && mv ./dotfiles/.prettierrc /app/.prettierrc \
+    && mv ./dotfiles/.prettierrc /home/user/.prettierrc \
     && mv ./dotfiles/.gitconfig /home/user/.gitconfig \
     && mv ./dotfiles/.gitignore_global /home/user/.gitignore_global \
-    && mv ./dotfiles/ruff.toml /app/.ruff.toml \
+    && mv ./dotfiles/ruff.toml /home/user/.ruff.toml \
 \   
     && rm -rf ./dotfiles \
     && mkdir -p /home/${USERNAME}/.vscode-server \
