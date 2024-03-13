@@ -78,8 +78,8 @@ RUN chown -R user:user /home/user \
     && chown -R user:user /app \
     && chmod -R 777 /app  \
     && chmod -R 777 /home/${USERNAME}/.vscode-server \
-    && chmod -R 777 /home/${USERNAME}/.vscode-server-insiders \
-\
-    && install_dotfiles /app .prettierrc
+    && chmod -R 777 /home/${USERNAME}/.vscode-server-insiders
+# \
+#     && install_dotfiles /app .prettierrc
 
 CMD sleep infinity

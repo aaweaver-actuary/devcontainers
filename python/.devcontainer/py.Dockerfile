@@ -109,8 +109,8 @@ RUN chown -R user:user /home/user \
     && chmod -R 777 /home/user \
     && chmod -R 777 /app  \
     && chmod -R 777 /home/${USERNAME}/.vscode-server \
-    && chmod -R 777 /home/${USERNAME}/.vscode-server-insiders \
-\
-    && install_dotfiles /app .prettierrc .ruff.toml .mypy.ini
+    && chmod -R 777 /home/${USERNAME}/.vscode-server-insiders
+# \
+#     && install_dotfiles /app .prettierrc .ruff.toml .mypy.ini
 
 CMD sleep infinity
