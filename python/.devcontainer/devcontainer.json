@@ -14,7 +14,8 @@
         "usernamehw.errorlens",
         "charliermarsh.ruff",
         "ms-python.mypy-type-checker",
-        "ms-python.flake8"
+        "ms-python.flake8",
+        "rodolphebarbanneau.python-docstring-highlighter"
       ]
     },
     "settings": {
