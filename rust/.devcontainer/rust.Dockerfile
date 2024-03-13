@@ -33,14 +33,15 @@ RUN rustup component add rust-src \
     && apt-get -y install --no-install-recommends \
     git bash \
     && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* \
+\
     && git clone https://github.com/aaweaver-actuary/dotfiles.git \
     && mv ./dotfiles/.bashrc /home/user/.bashrc \ 
     && mv ./dotfiles/.profile /home/user/.profile \ 
     && mv ./dotfiles/.hushlogin /home/user/.hushlogin \
-    && mv ./dotfiles/.prettierrc /home/user/.prettierrc \
     && mv ./dotfiles/.gitconfig /home/user/.gitconfig \
     && mv ./dotfiles/.gitignore_global /home/user/.gitignore_global \
     && rm -rf ./dotfiles \
+\
     && ln -s /usr/local/cargo/bin/cargo /usr/bin/cargo \
     && ln -s /usr/local/cargo/bin/rustc /usr/bin/rustc \
     && ln -s /usr/local/cargo/bin/rustup /usr/bin/rustup \
@@ -48,6 +49,7 @@ RUN rustup component add rust-src \
     && ln -s /usr/local/cargo/bin/rustfmt /usr/bin/rustfmt \
     && ln -s /usr/local/cargo/bin/cargo-clippy /usr/bin/cargo-clippy \
     && ln -s /usr/local/cargo/bin/rust-analyzer /usr/bin/rust-analyzer \
+\
     && mkdir -p /home/${USERNAME}/.vscode-server \
     && mkdir -p /home/${USERNAME}/.vscode-server-insiders
 
@@ -62,6 +64,8 @@ RUN chown -R user:user /home/user \
     && chmod -R 777 /app  \
     && chown -R user:user /usr/local/cargo \
     && chmod -R 777 /home/${USERNAME}/.vscode-server \
-    && chmod -R 777 /home/${USERNAME}/.vscode-server-insiders
+    && chmod -R 777 /home/${USERNAME}/.vscode-server-insiders \
+\
+    && install_dotfiles /app .prettierrc
 
 CMD sleep infinity

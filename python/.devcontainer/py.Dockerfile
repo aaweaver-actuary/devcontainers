@@ -62,10 +62,8 @@ RUN apt-get update \
     && mv ./dotfiles/.bashrc /home/user/.bashrc \ 
     && mv ./dotfiles/.profile /home/user/.profile \ 
     && mv ./dotfiles/.hushlogin /home/user/.hushlogin \
-    && mv ./dotfiles/.prettierrc /home/user/.prettierrc \
     && mv ./dotfiles/.gitconfig /home/user/.gitconfig \
-    && mv ./dotfiles/.gitignore_global /home/user/.gitignore_global \
-    && mv ./dotfiles/ruff.toml /home/user/.ruff.toml \
+    && mv ./dotfiles/.gitignore_global /home/user/.gitignore_global
 \   
     && rm -rf ./dotfiles \
     && mkdir -p /home/${USERNAME}/.vscode-server \
@@ -109,6 +107,8 @@ RUN chown -R user:user /home/user \
     && chown -R user:user /app \
     && chmod -R 777 /app  \
     && chmod -R 777 /home/${USERNAME}/.vscode-server \
-    && chmod -R 777 /home/${USERNAME}/.vscode-server-insiders
+    && chmod -R 777 /home/${USERNAME}/.vscode-server-insiders \
+\
+    && install_dotfiles /app .prettierrc .ruff.toml .mypy.ini
 
 CMD sleep infinity
