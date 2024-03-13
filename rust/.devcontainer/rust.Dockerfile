@@ -17,6 +17,9 @@ RUN if getent group $USER_GID ; then echo "Group $USER_GID already exists"; else
     && chmod 0440 /etc/sudoers.d/$USERNAME \
     && chmod 777 ${HOME}
 
+# Add a command to install dotfiles
+COPY install_dotfiles.bash /usr/install_dotfiles
+RUN ln -s /usr/install_dotfiles /usr/local/bin/install_dotfiles
 
 # Switch to the user's home directory
 WORKDIR $HOME

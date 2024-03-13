@@ -1,6 +1,6 @@
 {
   "privileged": true,
-  "dockerComposeFile": "docker-compose.yml",
+  "dockerComposeFile": "compose.yml",
   "service": "py",
   "workspaceFolder": "/app",
   "customizations": {
@@ -29,5 +29,5 @@
       "editor.defaultFormatter": "charliermarsh.ruff"
     }
   },
-  "postAttachCommand": "mv /home/user/.prettierrc /app/.prettierrc && mv /home/user/.ruff.toml /app/.ruff.toml"
+  "postAttachCommand": "install_dotfiles /app .ruff.toml .prettierrc .mypy.ini"
 }

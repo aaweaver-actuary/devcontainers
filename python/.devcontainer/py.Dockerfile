@@ -26,8 +26,10 @@ RUN if getent group $USER_GID ; then echo "Group $USER_GID already exists"; else
     && chown -R $USERNAME:$USERNAME /app \
     && chmod -R 777 /app
 
-# Copy over the Makefile
-COPY python/.devcontainer/Makefile /app/Makefile
+# Copy over the Makefile and script to install dotfiles
+COPY python/.devcontainer/Makefile /usr/Makefile
+COPY install_dotfiles.bash /usr/install_dotfiles
+RUN ln -s /usr/install_dotfiles /usr/local/bin/install_dotfiles
 
 # Switch to the user's home directory
 WORKDIR $HOME
@@ -43,7 +45,7 @@ RUN apt-get update \
         libreadline-dev \
         libsqlite3-dev \
         curl \
-    make \
+        make \
         bash \
         git \
         libncursesw5-dev \
@@ -85,6 +87,7 @@ RUN PYTHON_CONFIGURE_OPTS='--enable-optimizations --with-lto' \
     && pyenv global $python_version \
     && pyenv rehash \
     && ln -s /home/user/.pyenv/versions/$python_version/bin/python /usr/local/bin/py
+    
 
 RUN py -m venv /app/.venv \
     && . /app/.venv/bin/activate \

@@ -22,6 +22,10 @@ RUN if getent group $USER_GID ; then echo "Group $USER_GID already exists"; else
 # Copy over the Makefile
 COPY golang/.devcontainer/Makefile /usr/local/Makefile
 
+# Add a command to install dotfiles
+COPY install_dotfiles.bash /usr/install_dotfiles
+RUN ln -s /usr/install_dotfiles /usr/local/bin/install_dotfiles
+
 # Switch to the user's home directory
 WORKDIR $HOME
 
