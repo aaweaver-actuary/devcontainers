@@ -18,7 +18,8 @@ RUN if getent group $USER_GID ; then echo "Group $USER_GID already exists"; else
     && chmod 777 ${HOME}
 
 # Add a command to install dotfiles
-COPY ../install_dotfiles.bash /usr/local/bin/install_dotfiles
+COPY ../install_dotfiles.bash ~/install_dotfiles
+RUN ln -s ~/install_dotfiles /usr/local/bin/install_dotfiles
 
 # Switch to the user's home directory
 WORKDIR $HOME
@@ -31,7 +32,7 @@ RUN rustup component add rust-src \
     && rustup component add rust-analyzer \
     && apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends \
-    git bash \
+        git bash \
     && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* \
 \
     && git clone https://github.com/aaweaver-actuary/dotfiles.git \

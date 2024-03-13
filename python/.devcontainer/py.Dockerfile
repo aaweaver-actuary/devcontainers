@@ -26,9 +26,12 @@ RUN if getent group $USER_GID ; then echo "Group $USER_GID already exists"; else
     && chown -R $USERNAME:$USERNAME /app \
     && chmod -R 777 /app
 
-# Copy over the Makefile and script to install dotfiles
+# Copy over the Makefile
 COPY python/.devcontainer/Makefile /usr/Makefile
-COPY ../install_dotfiles.bash /usr/local/bin/install_dotfiles
+
+# Add a command to install dotfiles
+COPY ../install_dotfiles.bash ~/install_dotfiles
+RUN ln -s ~/install_dotfiles /usr/local/bin/install_dotfiles
 
 # Switch to the user's home directory
 WORKDIR $HOME
@@ -63,7 +66,7 @@ RUN apt-get update \
     && mv ./dotfiles/.profile /home/user/.profile \ 
     && mv ./dotfiles/.hushlogin /home/user/.hushlogin \
     && mv ./dotfiles/.gitconfig /home/user/.gitconfig \
-    && mv ./dotfiles/.gitignore_global /home/user/.gitignore_global
+    && mv ./dotfiles/.gitignore_global /home/user/.gitignore_global \
 \   
     && rm -rf ./dotfiles \
     && mkdir -p /home/${USERNAME}/.vscode-server \
@@ -104,7 +107,6 @@ WORKDIR /app
 
 RUN chown -R user:user /home/user \
     && chmod -R 777 /home/user \
-    && chown -R user:user /app \
     && chmod -R 777 /app  \
     && chmod -R 777 /home/${USERNAME}/.vscode-server \
     && chmod -R 777 /home/${USERNAME}/.vscode-server-insiders \
