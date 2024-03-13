@@ -60,7 +60,10 @@ RUN apt-get update \
 \   
     && rm -rf ./dotfiles \
     && mkdir -p /home/${USERNAME}/.vscode-server \
-    && mkdir -p /home/${USERNAME}/.vscode-server-insiders
+    && mkdir -p /home/${USERNAME}/.vscode-server-insiders \
+\
+    && ln -s /usr/local/go/bin/go /usr/local/bin/go \
+    && ln -s /usr/local/go/bin/gofmt /usr/local/bin/gofmt
 
 # Set the default shell to bash rather than sh
 SHELL ["/bin/bash", "-c"]
