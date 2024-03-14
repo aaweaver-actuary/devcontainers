@@ -23,7 +23,8 @@ WORKDIR $HOME
 
 # Create the user with specified USER_UID and USER_GID
 COPY ../../setup_user.bash /tmp/setup_user.bash
-RUN /tmp/setup_user.bash "${USERNAME}" "${USER_UID}" "${USER_GID}" \
+RUN chmod +x /tmp/setup_user.bash \
+    && /tmp/setup_user.bash "${USERNAME}" "${USER_UID}" "${USER_GID}" \
     && rm /tmp/setup_user.bash
 
 # Install the Python components, other tools, and dotfiles
