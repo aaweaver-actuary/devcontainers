@@ -13,19 +13,19 @@
         "vscode-icons-team.vscode-icons",
         "usernamehw.errorlens",
         "golang.go"
-      ]
-    },
-    "settings": {
-      "terminal.integrated.shell.linux": "/bin/bash",
-      "workbench.panel.defaultLocation": "bottom",
-      "workbench.colorTheme": "GitHub Dark High Contrast",
-      "editor.fontFamily": "Ubuntu Mono derivative Powerline",
-      "editor.formatOnSave": true,
-      "editor.formatOnType": true,
-      "editor.formatOnPaste": true
-      // "editor.defaultFormatter": "charliermarsh.ruff",
-      // "gopls.ui_semantic_tokens": true
-      
+      ],
+      "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash",
+        "workbench.panel.defaultLocation": "bottom",
+        "workbench.colorTheme": "GitHub Dark High Contrast",
+        "editor.fontFamily": "Ubuntu Mono derivative Powerline",
+        "editor.formatOnSave": true,
+        "editor.formatOnType": true,
+        "editor.formatOnPaste": true
+        // "editor.defaultFormatter": "charliermarsh.ruff",
+        // "gopls.ui_semantic_tokens": true
+        
+      }
     }
   }
 }
