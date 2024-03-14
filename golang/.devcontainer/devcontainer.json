@@ -1,6 +1,6 @@
 {
   "privileged": true,
-  "dockerComposeFile": "docker-compose.yml",
+  "dockerComposeFile": "compose.yml",
   "service": "go",
   "workspaceFolder": "/app",
   "customizations": {

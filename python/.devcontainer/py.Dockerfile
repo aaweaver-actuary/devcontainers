@@ -11,23 +11,8 @@ ENV HOME=/home/${USERNAME}
 # pyenv environment variables
 ENV PYENV_ROOT=/home/user/.pyenv
 
-
-WORKDIR /home/${USERNAME}
-
-# Create the user with specified USER_UID and USER_GID
-RUN if getent group $USER_GID ; then echo "Group $USER_GID already exists"; else groupadd --gid $USER_GID $USERNAME; fi \
-    && if id -u $USERNAME > /dev/null 2>&1; then echo "User $USERNAME already exists"; else useradd --uid $USER_UID --gid $USER_GID -m $USERNAME; fi \
-    && apt-get update \
-    && apt-get install -y sudo \
-    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
-    && chmod 0440 /etc/sudoers.d/$USERNAME \
-    && chmod 777 ${HOME} \
-    && mkdir /app \
-    && chown -R $USERNAME:$USERNAME /app \
-    && chmod -R 777 /app
-
 # Copy over the Makefile
-COPY python/.devcontainer/Makefile /usr/Makefile
+COPY python/.devcontainer/Makefile /usr/local/Makefile
 
 # Add a command to install dotfiles
 COPY ../install_dotfiles.bash /home/user/install_dotfiles
@@ -35,6 +20,11 @@ RUN ln -s /home/user/install_dotfiles /usr/local/bin/install_dotfiles
 
 # Switch to the user's home directory
 WORKDIR $HOME
+
+# Create the user with specified USER_UID and USER_GID
+COPY ../../setup_user.bash /tmp/setup_user.bash
+RUN /tmp/setup_user.bash "${USERNAME}" "${USER_UID}" "${USER_GID}" \
+    && rm /tmp/setup_user.bash
 
 # Install the Python components, other tools, and dotfiles
 RUN apt-get update \
