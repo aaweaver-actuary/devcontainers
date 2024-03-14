@@ -9,6 +9,12 @@ fi
 # Assign the argument to a variable
 USERNAME=$1
 
+# Create the directories if they do not exist
+mkdir -p /home/$USERNAME
+mkdir -p /app
+mkdir -p /home/${USERNAME}/.vscode-server
+mkdir -p /home/${USERNAME}/.vscode-server-insiders
+
 # Change the owner and permissions of the home directory
 chown -R $USERNAME:$USERNAME /home/$USERNAME
 chmod -R 777 /home/$USERNAME
