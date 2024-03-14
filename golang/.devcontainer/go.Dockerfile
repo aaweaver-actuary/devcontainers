@@ -46,7 +46,7 @@ RUN chmod +x /tmp/setup_user.bash \
     && rm /tmp/update_user_permissions \
 \
     && chmod +x /tmp/install_global_dotfiles \
-    && /tmp/install_global_dotfiles \
+    && /tmp/install_global_dotfiles "${USERNAME}" \
     && rm /tmp/install_global_dotfiles \
 \
     && ln -s /home/user/install_dotfiles /usr/local/bin/install_dotfiles
