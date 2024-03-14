@@ -14,7 +14,7 @@ shift
 REPO_URL="https://github.com/aaweaver-actuary/dotfiles.git"
 REPO_DIR="dotfiles_repo"
 
-git clone $REPO_URL $REPO_DIR
+git clone --quiet $REPO_URL $REPO_DIR
 
 # Check if the clone was successful
 if [ ! -d "$REPO_DIR" ]; then
@@ -31,12 +31,12 @@ for file_name in "$@"; do
     if [ -f "$file_name" ]; then
         # Move or copy the file to the target directory
         # Using 'mv' for moving; replace with 'cp' to copy instead
-        mv "$file_name" "../$TARGET_DIRECTORY/"
+        mv "$file_name" "$TARGET_DIRECTORY/$file_name"
     fi
 done
 
-# Move back to the original directory and clean up the cloned repository
+# Move up one level and remove the dotfiles repo
 cd ..
 rm -rf $REPO_DIR
 
-echo "Operation completed."
+echo "Installed '$file_name' at '$TARGET_DIRECTORY/$file_name'"
