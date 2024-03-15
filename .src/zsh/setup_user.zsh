@@ -7,7 +7,7 @@ echo awk -F':' '{print $1}' /etc/passwd | tail -n 5
 mkdir -p /home/user
 
 # Add the user
-useradd --uid 1001 --gid 1001 -m "user" || { echo "Failed to add user 'user'. Exiting."; exit 1; }
+useradd --uid 150 --gid 150 -m "user" || { echo "Failed to add user 'user'. Exiting."; exit 1; }
 
 # # Update the system and install sudo
 # apt-get update && apt-get install -y sudo || { echo "Failed to update system and install sudo. Exiting."; exit 1; }
