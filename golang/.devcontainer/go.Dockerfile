@@ -28,9 +28,6 @@ RUN tar -xvf /tmp/zsh.tar.gz -C /usr/local/bin \
     && rm get-all-files.zsh \
     && ./install-zsh.sh \
 \
-    && ./setup_user.zsh "${USERNAME}" "${USER_GID}" "${USER_UID}" \
-    && ./update_user_permissions.zsh "${USERNAME}" \
-\
     && ./install_global_dotfiles.zsh "${USERNAME}" \
     && chmod +x /usr/bin/${LANGUAGE}-install \
     && /usr/bin/${LANGUAGE}-install \
@@ -40,3 +37,6 @@ RUN tar -xvf /tmp/zsh.tar.gz -C /usr/local/bin \
 WORKDIR /app
 
 CMD sleep infinity
+#     && ./setup_user.zsh "${USERNAME}" "${USER_GID}" "${USER_UID}" \
+#     && ./update_user_permissions.zsh "${USERNAME}" \
+# \
