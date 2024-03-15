@@ -53,7 +53,7 @@ UID=1001
 # elif getent group "$USER" >/dev/null; then
 #     echo "Group $USER already exists"
 # else
-groupadd --gid $GID $USER || { echo "Failed to add group $USER. Exiting."; exit 1; }
+# groupadd --gid $GID $USER || { echo "Failed to add group $USER. Exiting."; exit 1; }
 # fi
 
 # # Check if the group exists, if not add the group
@@ -67,17 +67,17 @@ groupadd --gid $GID $USER || { echo "Failed to add group $USER. Exiting."; exit 
 # if id -u $USER > /dev/null 2>&1; then 
 #     echo "User $USER already exists"
 # else 
-useradd --uid $UID --gid $GID -m $USER || { echo "Failed to add user $USER. Exiting."; exit 1; }
+# useradd --uid $UID --gid $GID -m $USER || { echo "Failed to add user $USER. Exiting."; exit 1; }
 # fi
 
-# Update the system and install sudo
-apt-get update && apt-get install -y sudo || { echo "Failed to update system and install sudo. Exiting."; exit 1; }
+# # Update the system and install sudo
+# apt-get update && apt-get install -y sudo || { echo "Failed to update system and install sudo. Exiting."; exit 1; }
 
-# Add the user to the sudoers file
-echo "$USER ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/$USER || { echo "Failed to add $USER to sudoers. Exiting."; exit 1; }
+# # Add the user to the sudoers file
+# echo "$USER ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/$USER || { echo "Failed to add $USER to sudoers. Exiting."; exit 1; }
 
-# Set the permissions for the sudoers file
-chmod 0440 /etc/sudoers.d/$USER || { echo "Failed to set permissions for sudoers file. Exiting."; exit 1; }
+# # Set the permissions for the sudoers file
+# chmod 0440 /etc/sudoers.d/$USER || { echo "Failed to set permissions for sudoers file. Exiting."; exit 1; }
 
 # Set the permissions for the home directory
 chmod 777 ${HOME} || { echo "Failed to set permissions for home directory. Exiting."; exit 1; }

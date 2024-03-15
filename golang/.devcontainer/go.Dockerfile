@@ -28,7 +28,7 @@ RUN tar -xvf /tmp/zsh.tar.gz -C /usr/local/bin \
     && rm get-all-files.zsh \
     && ./install-zsh.sh
 
-RUN /usr/local/bin/.src/zsh//setup_user.zsh \
+RUN /usr/local/bin/.src/zsh/setup_user.zsh \
     && /usr/local/bin/.src/zsh/install_global_dotfiles.zsh "${NEW_USER}" \
     && chmod +x /usr/bin/${LANGUAGE}-install \
     && /usr/bin/${LANGUAGE}-install \
