@@ -22,7 +22,7 @@ if [ -d "/root/.oh-my-zsh" ]; then
 fi
 
 # Install oh my zsh via curl
-sh -c "$(curl -fsSL $OHMYZSH_URL)" \
+(curl -fsSL $OHMYZSH_URL | zsh) \
     || { echo "Failed to install oh-my-zsh. Exiting."; exit 1; }
 
 # Set the default shell to zsh
