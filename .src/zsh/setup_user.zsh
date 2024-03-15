@@ -67,7 +67,7 @@ UID=1001
 # if id -u $USER > /dev/null 2>&1; then 
 #     echo "User $USER already exists"
 # else 
-# useradd --uid $UID --gid $GID -m $USER || { echo "Failed to add user $USER. Exiting."; exit 1; }
+useradd --uid 1001 --gid 1001 -m "user" || { echo "Failed to add user 'user'. Exiting."; exit 1; }
 # fi
 
 # # Update the system and install sudo
