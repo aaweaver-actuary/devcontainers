@@ -7,6 +7,7 @@ echo awk -F':' '{print $1}' /etc/passwd | tail -n 5
 mkdir -p /home/user
 
 # Add the user
+groupadd --gid 150 "user" || { echo "Failed to add group 'user'. Exiting."; exit 1; }
 useradd --uid 150 --gid 150 -m "user" || { echo "Failed to add user 'user'. Exiting."; exit 1; }
 
 # # Update the system and install sudo
