@@ -13,13 +13,13 @@ if ! command -v zsh &> /dev/null; then
     exit 1
 fi
 
-# Check if oh my zsh is already installed, if so, remove it
-if [ -d "$HOME/.oh-my-zsh" ]; then
-    rm -rf $HOME/.oh-my-zsh || { echo "Failed to remove $HOME/.oh-my-zsh. Exiting."; exit 1; }
-fi
-if [ -d "/root/.oh-my-zsh" ]; then
-    sudo rm -rf /root/.oh-my-zsh || { echo "Failed to remove /root/.oh-my-zsh. Exiting."; exit 1; }
-fi
+# # Check if oh my zsh is already installed, if so, remove it
+# if [ -d "$HOME/.oh-my-zsh" ]; then
+#     rm -rf $HOME/.oh-my-zsh || { echo "Failed to remove $HOME/.oh-my-zsh. Exiting."; exit 1; }
+# fi
+# if [ -d "/root/.oh-my-zsh" ]; then
+#     sudo rm -rf /root/.oh-my-zsh || { echo "Failed to remove /root/.oh-my-zsh. Exiting."; exit 1; }
+# fi
 
 # Install oh my zsh via curl
 (curl -fsSL $OHMYZSH_URL | zsh) \
