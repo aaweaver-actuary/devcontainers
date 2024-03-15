@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#! /bin/env zsh
 
 # Check if the correct number of arguments are passed
 if (( $# != 3 )); then
