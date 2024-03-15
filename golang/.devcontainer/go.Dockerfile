@@ -3,9 +3,9 @@ FROM mcr.microsoft.com/devcontainers/go:1.22-bookworm as base
 ENV LANGUAGE=golang
 
 # Setup a non-root user
-ARG USERNAME=user
-ARG USER_UID=1001
-ARG USER_GID=$USER_UID
+ENV USERNAME=user
+ENV USER_UID=1001
+ENV USER_GID=$USER_UID
 
 # Switch to the user's home directory
 WORKDIR $HOME
@@ -25,8 +25,10 @@ RUN tar -xvf /tmp/zsh.tar.gz -C /usr/local/bin \
     && ./get-all-files.zsh \
     && rm get-all-files.zsh \
     && ./install-zsh.sh \
+\
     && ./setup_user.zsh "${USERNAME}" "${USER_GID}" "${USER_UID}" \
     && ./update_user_permissions.zsh "${USERNAME}" \
+\
     && ./install_global_dotfiles.zsh "${USERNAME}" \
     && chmod +x /usr/bin/${LANGUAGE}-install \
     && /usr/bin/${LANGUAGE}-install \

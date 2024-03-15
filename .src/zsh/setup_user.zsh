@@ -13,16 +13,25 @@ USER_UID=${3:-1001}
 
 # Ensure USERNAME is not 'root'. If so, default to 'user'
 if [[ "$USERNAME" == "root" ]]; then
+    echo "Username cannot be 'root'. Defaulting to 'user'."
+    echo "Username before: $USERNAME"
     USERNAME="user"
+    echo "Username after: $USERNAME"
 fi
 
 # Ensure USER_GID and USER_UID are not '0'. If so, default to 1001
-if [[ "$USER_GID" == "0" ]]; then
+if [[ $USER_GID == 0 ]]; then
+    echo "User GID cannot be '0'. Defaulting to 1001."
+    echo "User GID before: $USER_GID"
     USER_GID=1001
+    echo "User GID after: $USER_GID"
 fi
 
-if [[ "$USER_UID" == "0" ]]; then
+if [[ $USER_UID == 0 ]]; then
+    echo "User UID cannot be '0'. Defaulting to 1001."
+    echo "User UID before: $USER_UID"
     USER_UID=1001
+    echo "User UID after: $USER_UID"
 fi
 
 # Check if the group exists, if not add the group
