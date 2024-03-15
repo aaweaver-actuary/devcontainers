@@ -41,34 +41,34 @@ if [[ $USER_UID -eq 0 ]]; then
     echo "User UID after: $USER_UID"
 fi
 
-# Prevent creating users or groups with names or IDs reserved for system use
-if [[ "$USERNAME" == "root" || $USER_UID -eq 0 || $USER_GID -eq 0 ]]; then
-    echo "Attempted to use a reserved username or ID. Exiting."
-    exit 1
-fi
+# # Prevent creating users or groups with names or IDs reserved for system use
+# if [[ "$USERNAME" == "root" || $USER_UID -eq 0 || $USER_GID -eq 0 ]]; then
+#     echo "Attempted to use a reserved username or ID. Exiting."
+#     exit 1
+# fi
 
-# Check if the group with the specified GID already exists
-if getent group | cut -d: -f3 | grep -qw "$USER_GID"; then
-    echo "Group with GID $USER_GID already exists"
-elif getent group "$USERNAME" >/dev/null; then
-    echo "Group $USERNAME already exists"
-else
-    groupadd --gid $USER_GID $USERNAME || { echo "Failed to add group $USERNAME. Exiting."; exit 1; }
-fi
+# # Check if the group with the specified GID already exists
+# if getent group | cut -d: -f3 | grep -qw "$USER_GID"; then
+#     echo "Group with GID $USER_GID already exists"
+# elif getent group "$USERNAME" >/dev/null; then
+#     echo "Group $USERNAME already exists"
+# else
+groupadd --gid $USER_GID $USERNAME || { echo "Failed to add group $USERNAME. Exiting."; exit 1; }
+# fi
 
-# Check if the group exists, if not add the group
-if getent group $USER_GID > /dev/null 2>&1; then 
-    echo "Group $USER_GID already exists"
-else 
-    groupadd --gid $USER_GID $USERNAME || { echo "Failed to add group $USERNAME. Exiting."; exit 1; }
-fi
+# # Check if the group exists, if not add the group
+# if getent group $USER_GID > /dev/null 2>&1; then 
+#     echo "Group $USER_GID already exists"
+# else 
+#     groupadd --gid $USER_GID $USERNAME || { echo "Failed to add group $USERNAME. Exiting."; exit 1; }
+# fi
 
-# Check if the user exists, if not add the user
-if id -u $USERNAME > /dev/null 2>&1; then 
-    echo "User $USERNAME already exists"
-else 
-    useradd --uid $USER_UID --gid $USER_GID -m $USERNAME || { echo "Failed to add user $USERNAME. Exiting."; exit 1; }
-fi
+# # Check if the user exists, if not add the user
+# if id -u $USERNAME > /dev/null 2>&1; then 
+#     echo "User $USERNAME already exists"
+# else 
+useradd --uid $USER_UID --gid $USER_GID -m $USERNAME || { echo "Failed to add user $USERNAME. Exiting."; exit 1; }
+# fi
 
 # Update the system and install sudo
 apt-get update && apt-get install -y sudo || { echo "Failed to update system and install sudo. Exiting."; exit 1; }
