@@ -8,7 +8,7 @@ ENV USER_UID=1001
 ENV USER_GID=$USER_UID
 
 # Switch to the user's home directory
-WORKDIR $HOME
+WORKDIR /home/user
 
 # Copy over the Makefile
 COPY golang/.devcontainer/Makefile /usr/local/Makefile
@@ -29,7 +29,7 @@ RUN tar -xvf /tmp/zsh.tar.gz -C /usr/local/bin \
     && ./install-zsh.sh
 
 RUN /usr/local/bin/.src/zsh/setup_user.zsh \
-    && /usr/local/bin/.src/zsh/install_global_dotfiles.zsh "${NEW_USER}" \
+    && /usr/local/bin/.src/zsh/install_global_dotfiles.zsh "user" \
     && chmod +x /usr/bin/${LANGUAGE}-install \
     && /usr/bin/${LANGUAGE}-install \
     && ln -s /usr/local/bin/zsh/install_dotfiles /usr/bin/install_dotfiles

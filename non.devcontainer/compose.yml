@@ -1,0 +1,8 @@
+# version: "3"
+# services:
+#   os:
+#     image: aaweaver9/go:latest
+#     container_name: go
+#     volumes:
+#       - ..:/app
+#     working_dir: /app

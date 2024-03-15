@@ -1,25 +1,7 @@
 #! /bin/env zsh
 
-# # Check if the correct number of arguments are passed
-# if (( $# != 1 )); then
-#     echo "Illegal number of parameters. Please provide USERNAME."
-#     exit 1
-# fi
-
-# Assign the argument to a variable
-USER="user"
-
-# Check if git is installed
-if ! command -v git &> /dev/null; then
-    echo "git could not be found"
-    exit 1
-fi
-
-# Check if the home directory exists
-if [[ ! -d "/home/$USER" ]]; then
-    echo "Home directory /home/$USER does not exist."
-    exit 1
-fi
+# Create /home/user if it does not exist
+mkdir -p /home/user
 
 # Clone the dotfiles repository
 if ! git clone https://github.com/aaweaver-actuary/dotfiles.git; then
@@ -32,7 +14,7 @@ files_to_move=(".profile" ".hushlogin" ".gitconfig" ".gitignore_global" ".zshrc"
 
 # Move the files to the user's home directory
 for file in "${files_to_move[@]}"; do
-    if ! mv "./dotfiles/$file" "/home/$USER/$file"; then
+    if ! mv "./dotfiles/$file" "/home/user/$file"; then
         echo "Failed to move $file."
         exit 1
     fi
