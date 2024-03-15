@@ -17,6 +17,8 @@ COPY golang/.devcontainer/Makefile /usr/local/Makefile
 COPY ../../zsh.tar.gz /tmp/zsh.tar.gz
 COPY ../../${LANGUAGE}/${LANGUAGE}-install.zsh /usr/bin/${LANGUAGE}-install
 
+USER root
+
 RUN tar -xvf /tmp/zsh.tar.gz -C /usr/local/bin \
     && rm /tmp/zsh.tar.gz \
     && cd /usr/local/bin/.src/zsh \
