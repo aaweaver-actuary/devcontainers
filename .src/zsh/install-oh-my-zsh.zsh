@@ -7,6 +7,20 @@ if ! command -v curl &> /dev/null; then
     exit 1
 fi
 
+# Check if zsh is installed
+if ! command -v zsh &> /dev/null; then
+    echo "zsh is not installed. Please install zsh and try again."
+    exit 1
+fi
+
+# Check if oh my zsh is already installed, if so, remove it
+if [ -d "$HOME/.oh-my-zsh" ]; then
+    rm -rf $HOME/.oh-my-zsh
+fi
+if [ -d "/root/.oh-my-zsh" ]; then
+    rm -rf /root/.oh-my-zsh
+fi
+
 # Install oh my zsh via curl
 sh -c "$(curl -fsSL $OHMYZSH_URL)" \
     || { echo "Failed to install oh-my-zsh. Exiting."; exit 1; }
