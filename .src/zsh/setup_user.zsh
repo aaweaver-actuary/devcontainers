@@ -80,13 +80,13 @@ UID=1001
 # chmod 0440 /etc/sudoers.d/$USER || { echo "Failed to set permissions for sudoers file. Exiting."; exit 1; }
 
 # Set the permissions for the home directory
-chmod 777 ${HOME} || { echo "Failed to set permissions for home directory. Exiting."; exit 1; }
+chmod 777 /home/user || { echo "Failed to set permissions for home directory. Exiting."; exit 1; }
 
 # Create the app directory
 mkdir /app || { echo "Failed to create /app directory. Exiting."; exit 1; }
 
 # Change the owner of the app directory to the new user
-chown -R $USER:$USER /app || { echo "Failed to change owner of /app. Exiting."; exit 1; }
+chown -R user:user /app || { echo "Failed to change owner of /app. Exiting."; exit 1; }
 
 # Set the permissions for the app directory
 chmod -R 777 /app || { echo "Failed to set permissions for /app. Exiting."; exit 1; }
