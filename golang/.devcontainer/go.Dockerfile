@@ -26,7 +26,8 @@ RUN tar -xvf /tmp/zsh.tar.gz -C /usr/local/bin \
     && /usr/local/bin/.src/zsh/install_global_dotfiles.zsh \
     && chmod +x /usr/bin/${LANGUAGE}-install \
     && /usr/bin/${LANGUAGE}-install \
-    && ln -s /usr/local/bin/zsh/install_dotfiles /usr/bin/install_dotfiles
+    && ln -s /usr/local/bin/zsh/install_dotfiles /usr/bin/install_dotfiles \
+    && chmod +x /usr/bin/install_dotfiles
 
 WORKDIR /app
 
