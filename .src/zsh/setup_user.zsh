@@ -1,10 +1,10 @@
 #! /bin/env zsh
 
-# Check if the correct number of arguments are passed
-if (( $# != 3 )); then
-    echo "Illegal number of parameters. Please provide username, gid, and uid."
-    exit 1
-fi
+# # Check if the correct number of arguments are passed
+# if (( $# != 3 )); then
+#     echo "Illegal number of parameters. Please provide username, gid, and uid."
+#     exit 1
+# fi
 
 # Set execution trace and others to debug
 set -x
@@ -13,33 +13,33 @@ set -u
 set -o pipefail
 
 
-# Assign the arguments to variables with default values if they are set to 'root' or '0'
-USER=${1:-user}
-GID=${2:-1001}
-UID=${3:-1001}
+# # Assign the arguments to variables with default values if they are set to 'root' or '0'
+USER="user"
+GID=1001
+UID=1001
 
-# Ensure USERNAME is not 'root'. If so, default to 'user'
-if [[ "$USER" == "root" ]]; then
-    echo "Username cannot be 'root'. Defaulting to 'user'."
-    echo "Username before: $USER"
-    USER="user"
-    echo "Username after: $USER"
-fi
+# # Ensure USERNAME is not 'root'. If so, default to 'user'
+# if [[ "$USER" == "root" ]]; then
+#     echo "Username cannot be 'root'. Defaulting to 'user'."
+#     echo "Username before: $USER"
+#     USER="user"
+#     echo "Username after: $USER"
+# fi
 
-# Ensure GID and UID are not '0'. If so, default to 1001
-if [[ $GID -eq 0 ]]; then
-    echo "User GID cannot be '0'. Defaulting to 1001."
-    echo "User GID before: $GID"
-    GID=1001
-    echo "User GID after: $GID"
-fi
+# # Ensure GID and UID are not '0'. If so, default to 1001
+# if [[ $GID -eq 0 ]]; then
+#     echo "User GID cannot be '0'. Defaulting to 1001."
+#     echo "User GID before: $GID"
+#     GID=1001
+#     echo "User GID after: $GID"
+# fi
 
-if [[ $UID -eq 0 ]]; then
-    echo "User UID cannot be '0'. Defaulting to 1001."
-    echo "User UID before: $UID"
-    UID=1001
-    echo "User UID after: $UID"
-fi
+# if [[ $UID -eq 0 ]]; then
+#     echo "User UID cannot be '0'. Defaulting to 1001."
+#     echo "User UID before: $UID"
+#     UID=1001
+#     echo "User UID after: $UID"
+# fi
 
 # # Prevent creating users or groups with names or IDs reserved for system use
 # if [[ "$USER" == "root" || $UID -eq 0 || $GID -eq 0 ]]; then

@@ -1,13 +1,13 @@
 #! /bin/env zsh
 
-# Check if the correct number of arguments are passed
-if (( $# != 1 )); then
-    echo "Illegal number of parameters. Please provide USERNAME."
-    exit 1
-fi
+# # Check if the correct number of arguments are passed
+# if (( $# != 1 )); then
+#     echo "Illegal number of parameters. Please provide USERNAME."
+#     exit 1
+# fi
 
 # Assign the argument to a variable
-USER=$1
+USER="user"
 
 # Check if git is installed
 if ! command -v git &> /dev/null; then
