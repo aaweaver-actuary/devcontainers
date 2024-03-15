@@ -1,0 +1,5 @@
+install_dotfiles.zsh
+install_global_dotfiles.zsh
+install-oh-my-zsh.zsh
+setup_user.zsh
+update_user_permissions.zsh

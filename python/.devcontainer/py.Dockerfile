@@ -39,7 +39,7 @@ RUN apt-get update \
         libsqlite3-dev \
         curl \
         make \
-        bash \
+        zsh \
         git \
         libncursesw5-dev \
         xz-utils \
