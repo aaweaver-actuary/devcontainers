@@ -2,12 +2,12 @@
 
 # Check if the correct number of arguments are passed
 if (( $# != 1 )); then
-    echo "Illegal number of parameters. Please provide username."
+    echo "Illegal number of parameters. Please provide USERNAME."
     exit 1
 fi
 
 # Assign the argument to a variable
-USERNAME=$1
+USER=$1
 
 # Check if git is installed
 if ! command -v git &> /dev/null; then
@@ -16,8 +16,8 @@ if ! command -v git &> /dev/null; then
 fi
 
 # Check if the home directory exists
-if [[ ! -d "/home/$USERNAME" ]]; then
-    echo "Home directory /home/$USERNAME does not exist."
+if [[ ! -d "/home/$USER" ]]; then
+    echo "Home directory /home/$USER does not exist."
     exit 1
 fi
 
@@ -32,7 +32,7 @@ files_to_move=(".profile" ".hushlogin" ".gitconfig" ".gitignore_global" ".zshrc"
 
 # Move the files to the user's home directory
 for file in "${files_to_move[@]}"; do
-    if ! mv "./dotfiles/$file" "/home/$USERNAME/$file"; then
+    if ! mv "./dotfiles/$file" "/home/$USER/$file"; then
         echo "Failed to move $file."
         exit 1
     fi
