@@ -6,10 +6,24 @@ if (( $# != 3 )); then
     exit 1
 fi
 
-# Assign the arguments to variables
-USERNAME=$1
-USER_GID=$2
-USER_UID=$3
+# Assign the arguments to variables with default values if they are set to 'root' or '0'
+USERNAME=${1:-user}
+USER_GID=${2:-1001}
+USER_UID=${3:-1001}
+
+# Ensure USERNAME is not 'root'. If so, default to 'user'
+if [[ "$USERNAME" == "root" ]]; then
+    USERNAME="user"
+fi
+
+# Ensure USER_GID and USER_UID are not '0'. If so, default to 1001
+if [[ "$USER_GID" == "0" ]]; then
+    USER_GID=1001
+fi
+
+if [[ "$USER_UID" == "0" ]]; then
+    USER_UID=1001
+fi
 
 # Check if the group exists, if not add the group
 if getent group $USER_GID > /dev/null 2>&1; then 
