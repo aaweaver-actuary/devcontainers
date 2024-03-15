@@ -6,6 +6,13 @@ if (( $# != 3 )); then
     exit 1
 fi
 
+# Set execution trace and others to debug
+set -x
+set -e
+set -u
+set -o pipefail
+
+
 # Assign the arguments to variables with default values if they are set to 'root' or '0'
 USERNAME=${1:-user}
 USER_GID=${2:-1001}
@@ -20,18 +27,33 @@ if [[ "$USERNAME" == "root" ]]; then
 fi
 
 # Ensure USER_GID and USER_UID are not '0'. If so, default to 1001
-if [[ $USER_GID == 0 ]]; then
+if [[ $USER_GID -eq 0 ]]; then
     echo "User GID cannot be '0'. Defaulting to 1001."
     echo "User GID before: $USER_GID"
     USER_GID=1001
     echo "User GID after: $USER_GID"
 fi
 
-if [[ $USER_UID == 0 ]]; then
+if [[ $USER_UID -eq 0 ]]; then
     echo "User UID cannot be '0'. Defaulting to 1001."
     echo "User UID before: $USER_UID"
     USER_UID=1001
     echo "User UID after: $USER_UID"
+fi
+
+# Prevent creating users or groups with names or IDs reserved for system use
+if [[ "$USERNAME" == "root" || $USER_UID -eq 0 || $USER_GID -eq 0 ]]; then
+    echo "Attempted to use a reserved username or ID. Exiting."
+    exit 1
+fi
+
+# Check if the group with the specified GID already exists
+if getent group | cut -d: -f3 | grep -qw "$USER_GID"; then
+    echo "Group with GID $USER_GID already exists"
+elif getent group "$USERNAME" >/dev/null; then
+    echo "Group $USERNAME already exists"
+else
+    groupadd --gid $USER_GID $USERNAME || { echo "Failed to add group $USERNAME. Exiting."; exit 1; }
 fi
 
 # Check if the group exists, if not add the group
