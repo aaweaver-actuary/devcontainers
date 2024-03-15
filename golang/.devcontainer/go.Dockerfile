@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/devcontainers/go:1.22-bookworm as base
 ENV LANGUAGE=golang
 
 # Setup a non-root user
-ENV USERNAME=user
+ENV NEW_USER=user
 ENV USER_UID=1001
 ENV USER_GID=$USER_UID
 
@@ -28,7 +28,7 @@ RUN tar -xvf /tmp/zsh.tar.gz -C /usr/local/bin \
     && rm get-all-files.zsh \
     && ./install-zsh.sh
 
-RUN /usr/local/bin/.src/zsh/install_global_dotfiles.zsh "${USERNAME}" \
+RUN /usr/local/bin/.src/zsh/install_global_dotfiles.zsh "${NEW_USER}" \
     && chmod +x /usr/bin/${LANGUAGE}-install \
     && /usr/bin/${LANGUAGE}-install \
     && ln -s /usr/local/bin/zsh/install_dotfiles /usr/bin/install_dotfiles
@@ -37,6 +37,6 @@ RUN /usr/local/bin/.src/zsh/install_global_dotfiles.zsh "${USERNAME}" \
 WORKDIR /app
 
 CMD sleep infinity
-#     && ./setup_user.zsh "${USERNAME}" "${USER_GID}" "${USER_UID}" \
-#     && ./update_user_permissions.zsh "${USERNAME}" \
+#     && ./setup_user.zsh "${NEW_USER}" "${USER_GID}" "${USER_UID}" \
+#     && ./update_user_permissions.zsh "${NEW_USER}" \
 # \
