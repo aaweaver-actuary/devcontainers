@@ -4,24 +4,38 @@ services:
     image: postgres:16.2-alpine3.19
     environment:
       POSTGRES_DB: postgres
-      POSTGRES_USER: user
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+      
     ports:
       - "5432:5432"
     volumes:
       - ./data:/var/lib/postgresql/data
     networks:
       - postgres-network
-  python:
-    build: .
-    volumes:
-      - .:/app
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: mail@mail.com
+      PGADMIN_DEFAULT_PASSWORD: postgres
     ports:
-      - "5000:5000"
-    depends_on:
-      - postgres
+      - "5050:80"
     networks:
       - postgres-network
+    depends_on:
+      - postgres
+  # python:
+  #   build: 
+  #     - context: .
+  #     - Dockerfile: py.Dockerfile
+  #   volumes:
+  #     - .:/app
+  #   ports:
+  #     - "5000:5000"
+  #   depends_on:
+  #     - postgres
+  #   networks:
+  #     - postgres-network
 
 networks:
   postgres-network:
