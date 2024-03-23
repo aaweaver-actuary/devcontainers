@@ -1,10 +1,11 @@
 version: '3'
 services:
   py:
-    build:
-      context: .
-      dockerfile: py.Dockerfile
+    image: aaweaver9/py
     volumes:
       - ..:/app
     working_dir: /app
+    environment:
+      - PYTHONPATH=/app/.venv/bin/python
+      - PYDEVD_DISABLE_FILE_VALIDATION=1
     command: "tail -f /dev/null"
