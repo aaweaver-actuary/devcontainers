@@ -19,10 +19,10 @@
       ]
     },
     "settings": {
-      "terminal.integrated.shell.linux": "/bin/bash",
+      "terminal.integrated.shell.linux": "/bin/zsh",
       "workbench.panel.defaultLocation": "bottom",
       "workbench.colorTheme": "GitHub Dark High Contrast",
-      "editor.fontFamily": "Ubuntu Mono derivative Powerline",
+      "editor.fontFamily": "JetBrainsMono Nerd Font",
       "editor.formatOnSave": true,
       "editor.formatOnType": true,
       "editor.formatOnPaste": true,
