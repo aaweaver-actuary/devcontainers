@@ -13,13 +13,13 @@ RUN apt-get update && apt-get install -y \
     && rustup component add rustfmt clippy \
     && make install_dotfiles \
     && install_dotfiles ~ install_oh_my_zsh \
-    && chmod +x ./install_oh_my_zsh \
-    && . ./install_oh_my_zsh \
-    && rm install_oh_my_zsh \
+    && chmod +x ~/install_oh_my_zsh \
+    && . ~/install_oh_my_zsh \
+    && rm ~/install_oh_my_zsh \
     && install_dotfiles ~ .zshrc .zsh_aliases install_rust_analyzer \
-    && chmod +x ./install_rust_analyzer \
-    && . ./install_rust_analyzer \
-    && rm install_rust_analyzer \
+    && chmod +x ~/install_rust_analyzer \
+    && . ~/install_rust_analyzer \
+    && rm ~/install_rust_analyzer \
     && exec zsh
 
 CMD [ "zsh" ]
