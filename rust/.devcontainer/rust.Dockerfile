@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/devcontainers/rust as base
 WORKDIR /app
 COPY ../../Makefile /app/Makefile
 
-RUN apt-get update -o Acquire::https::Verify-Peer=False && apt-get install -o Acquire::https::Verify-Peer=false -y \
+RUN apt-get update && apt-get install -y \
         make \
         git \
         zsh \
