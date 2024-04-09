@@ -4,7 +4,7 @@ ENV LANGUAGE=rust
 WORKDIR /app
 COPY ../../Makefile /app/Makefile
 
-RUN apt-get update -o Acquire::https::Verify-Peer=false && apt-get install -o Acquire::https::Verify-Peer=false -y \
+RUN apt-get update -o Acquire::https::Verify-Peer false && apt-get install -o Acquire::https::Verify-Peer=false -y \
         make \
         git \
         zsh \
