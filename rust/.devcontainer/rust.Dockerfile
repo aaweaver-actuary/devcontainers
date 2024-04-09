@@ -1,40 +1,26 @@
 FROM mcr.microsoft.com/devcontainers/rust as base
 
 ENV LANGUAGE=rust
-WORKDIR /home/${USERNAME}
-
-# pyenv environment variables
-ENV PYENV_ROOT=/home/user/.pyenv
-
-# Switch to the user's home directory
-WORKDIR $HOME
-
-# Copy over the Makefile
-COPY python/.devcontainer/Makefile /usr/local/Makefile
-
-# Copy the commands
-COPY ../../zsh.tar.gz /tmp/zsh.tar.gz
-COPY ../../${LANGUAGE}/${LANGUAGE}-install.zsh /usr/bin/${LANGUAGE}-install
-
-USER root
-
-RUN tar -xvf /tmp/zsh.tar.gz -C /usr/local/bin \
-    && rm /tmp/zsh.tar.gz \
-    && cd /usr/local/bin/.src/zsh \
-    && mv ./install_dotfiles.zsh ./install_dotfiles \
-    && chmod +x get-all-files.zsh \
-    && ./get-all-files.zsh \
-    && rm get-all-files.zsh \
-    && ./install-zsh.sh \
-    && /usr/local/bin/.src/zsh/setup_user.zsh \
-    && /usr/local/bin/.src/zsh/install_global_dotfiles.zsh \
-    && chmod +x /usr/bin/${LANGUAGE}-install \
-    && /usr/bin/${LANGUAGE}-install \
-    && chmod +x /usr/local/bin/.src/zsh/install_dotfiles \
-    && ln -s /usr/local/bin/.src/zsh/install_dotfiles /usr/bin/install_dotfiles
-
 WORKDIR /app
+COPY ../../Makefile /app/Makefile
 
-CMD sleep infinity
+RUN apt-get update -o Acquire::https::Verify-Peer=false && apt-get install -o Acquire::https::Verify-Peer=false -y \
+        make \
+        git \
+        zsh \
+        curl \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && rustup component add rustfmt clippy \
+    && make install_dotfiles \
+    && install_dotfiles ~ install_oh_my_zsh \
+    && chmod +x ./install_oh_my_zsh \
+    && . ./install_oh_my_zsh \
+    && rm install_oh_my_zsh \
+    && install_dotfiles ~ .zshrc .zsh_aliases install_rust_analyzer \
+    && chmod +x ./install_rust_analyzer \
+    && . ./install_rust_analyzer \
+    && rm install_rust_analyzer \
+    && exec zsh
 
-
+CMD [ "zsh" ]

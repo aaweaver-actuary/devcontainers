@@ -9,9 +9,6 @@ ENV PYENV_ROOT=/home/user/.pyenv
 # Switch to the user's home directory
 WORKDIR $HOME
 
-# Copy over the Makefile
-COPY python/.devcontainer/Makefile /usr/local/Makefile
-
 # Copy the commands
 COPY ../../zsh.tar.gz /tmp/zsh.tar.gz
 COPY ../../${LANGUAGE}/${LANGUAGE}-install.zsh /usr/bin/${LANGUAGE}-install
