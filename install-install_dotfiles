@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# Install git
+sudo apt-get update && sudo apt-get install -y git
+
+# Clone dotfiles repo
+git clone http://github.com/aaweaver-actuary/dotfiles --quiet
+
+# Install install_dotfiles
+cd dotfiles
+cp install_dotfiles /usr/bin/install_dotfiles
+chmod +x /usr/bin/install_dotfiles
+
+# Clean up
+cd ..
+rm -rf dotfiles

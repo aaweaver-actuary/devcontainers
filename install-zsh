@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# Update and upgrade
+sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get full-upgrade -y
+
+# Install git and zsh
+sudo apt-get install -y git zsh
+
+# Install oh-my-zsh/install_dotfiles from my dotfiles repo
+git clone http://github.com/aaweaver-actuary/dotfiles
+cd dotfiles
+chmod +x install_oh_my_zsh
+./install_oh_my_zsh
+cd ..
+rm -rf dotfiles
+
+install_dotfiles ~ .zshrc .zsh_aliases
+
+

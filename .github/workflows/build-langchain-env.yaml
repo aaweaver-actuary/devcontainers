@@ -1,0 +1,79 @@
+name: langchain devcontainer
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  TAG_STEM: langchain-py
+  TEST_TAG: test
+  LATEST_TAG: latest
+  DOCKERFILE_FOLDER: ./langchain/.devcontainer
+  MAJOR_VERSION: 1
+  DSLIM_HTTP_PROBE: false
+  DOCKERHUB_REPO_OWNER: aaweaver9
+  DOCKERHUB_REPO: aaweaver9/devcontainers
+
+jobs:
+
+  login:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  build:
+    needs: login
+    runs-on: ubuntu-latest
+
+    steps:
+    # Check out the repository
+    - name: Check out the repository
+      uses: actions/checkout@v3
+
+    # Set up Docker Buildx
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    # Build test image
+    - name: Build and export to Docker
+      uses: mr-smithers-excellent/docker-build-push@v6.3
+      with:
+        image: ${{ env.DOCKERHUB_REPO_OWNER }}/${{ env.TAG_STEM }}
+        registry: docker.io
+        dockerfile: ${{ env.DOCKERFILE_FOLDER }}/${{ env.TAG_STEM }}.Dockerfile
+        pushImage: false
+        tags: test
+
+    # If the test passed, build the full-size images for all platforms
+    - uses: mr-smithers-excellent/docker-build-push@v6.3
+      name: Build full-sized images
+      with:
+        image: ${{ env.DOCKERHUB_REPO_OWNER }}/${{ env.TAG_STEM }}
+        registry: docker.io
+        dockerfile: ${{ env.DOCKERFILE_FOLDER }}/${{ env.TAG_STEM }}.Dockerfile
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+        tags: ${{ env.LATEST_TAG }}, v${{ env.MAJOR_VERSION }}.${{ github.run_number }}
+
+    # Slim the full-size image
+    - name: Slim the full-size images
+      uses: kitabisa/docker-slim-action@v1
+      with:
+        target: ${{ env.DOCKERHUB_REPO_OWNER }}/${{ env.TAG_STEM }}
+        tag: "slim"
+
+    # Delete the test image
+    - name: Delete the test image
+      run: |
+        docker image rm ${{ env.DOCKERHUB_REPO_OWNER }}/${{ env.TAG_STEM }}:${{ env.TEST_TAG }}
+
+    # Push only the slim image to Docker Hub
+    - name: Push slim and full-size images to Docker Hub
+      run: |
+        docker image push ${{ env.DOCKERHUB_REPO_OWNER }}/${{ env.TAG_STEM }} --all-tags
